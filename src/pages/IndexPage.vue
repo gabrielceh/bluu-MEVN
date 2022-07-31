@@ -1,34 +1,20 @@
 <template>
   <q-page padding>
-    <q-btn @click="access">Ingresar</q-btn>
+    <!-- <q-btn @click="userStore.access">Ingresar</q-btn> -->
+    <!-- <q-btn @click="userStore.logout">Cerrar Sesion</q-btn> -->
     <q-btn @click="createLink">Crear Link</q-btn>
-    {{ token }}
-    {{ expiresIn }}
+    {{ userStore.token }}
+    {{ userStore.expiresIn }}
   </q-page>
 </template>
 
 <script setup>
 import { api } from "src/boot/axios";
 import { ref } from "vue";
+import { useUserStore } from "src/stores/user-store";
 
-const token = ref("");
-const expiresIn = ref("");
-
-const access = async () => {
-  try {
-    const res = await api.post(`/auth/login`, {
-      email: "gabito@mail.com",
-      password: "123123",
-    });
-    // console.log(res);
-    // console.log(res.data);
-    token.value = res.data.token;
-    expiresIn.value = res.data.expiresIn;
-    setTime();
-  } catch (error) {
-    console.log(error);
-  }
-};
+// const { token, expiresIn, access, refreshToken } = useUserStore();
+const userStore = useUserStore();
 
 const createLink = async () => {
   try {
@@ -49,25 +35,5 @@ const createLink = async () => {
   }
 };
 
-//se ejecutara cada que se refresque la pag, haciendo que haga la solicitud del token a la cookie y lo envie al backend
-const refreshToken = async () => {
-  try {
-    const res = await api.get(`/auth/refresh`);
-    // console.log(res.data);
-    token.value = res.data.token;
-    expiresIn.value = res.data.expiresIn;
-    setTime();
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const setTime = () => {
-  setTimeout(() => {
-    console.log("se refrescó");
-    refreshToken();
-  }, expiresIn.value * 1000 - 10000);
-};
-
-refreshToken();
+// userStore.refreshToken();
 </script>
