@@ -11,10 +11,15 @@ const router = useRouter();
 
 const email = ref("");
 const password = ref("");
+const repassword = ref("");
 
 const handleSubmit = async () => {
   try {
-    const res = await userStore.access(email.value, password.value);
+    const res = await userStore.registerUser(
+      email.value,
+      password.value,
+      repassword.value
+    );
     console.log(res);
     router.push("/");
     email.value = "";
@@ -45,7 +50,7 @@ const alertBackend = (message = "Error de servidor") => {
 <template>
   <q-page padding class="row justify-center">
     <div class="col-12 col-sm-6 col-md-5">
-      <h3>Login</h3>
+      <h3>Register</h3>
       <q-form @submit.prevent="handleSubmit">
         <q-input
           v-model="email"
@@ -64,6 +69,16 @@ const alertBackend = (message = "Error de servidor") => {
           label="Password"
           type="password"
           :rules="[(val) => (val && val.length > 5) || 'Minino 6 caracteres']"
+        ></q-input>
+
+        <q-input
+          v-model="repassword"
+          label="Repetir Password"
+          type="password"
+          :rules="[
+            (val) =>
+              (val && val === password) || 'No coinciden las contraseñas',
+          ]"
         ></q-input>
 
         <div>

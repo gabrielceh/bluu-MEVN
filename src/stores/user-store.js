@@ -6,11 +6,11 @@ export const useUserStore = defineStore("userStore", () => {
   const token = ref(null);
   const expiresIn = ref(null);
 
-  const access = async () => {
+  const access = async (email, password) => {
     try {
       const res = await api.post(`/auth/login`, {
-        email: "gabito@mail.com",
-        password: "123123",
+        email,
+        password,
       });
       // console.log(res);
       // console.log(res.data);
@@ -19,7 +19,43 @@ export const useUserStore = defineStore("userStore", () => {
       localStorage.setItem("user", "UEFZQVNPIPCfpKE=");
       setTime();
     } catch (error) {
-      console.log(error);
+      // Manejo de errores con axios
+      if (error.response) {
+        // console.log(error.response.status);
+        // console.log(error.response.headers);
+        // console.log(error.response.data);
+        throw error.response.data;
+      } else if (error.request) {
+        console.log(error.request);
+      } else {
+        console.log(error.message);
+      }
+    }
+  };
+
+  const registerUser = async (email, password, repassword) => {
+    try {
+      const res = await api.post(`/auth/register`, {
+        email,
+        password,
+        repassword,
+      });
+      token.value = res.data.token;
+      expiresIn.value = res.data.expiresIn;
+      localStorage.setItem("user", "UEFZQVNPIPCfpKE=");
+      setTime();
+    } catch (error) {
+      // Manejo de errores con axios
+      if (error.response) {
+        // console.log(error.response.status);
+        // console.log(error.response.headers);
+        // console.log(error.response.data);
+        throw error.response.data;
+      } else if (error.request) {
+        console.log(error.request);
+      } else {
+        console.log(error.message);
+      }
     }
   };
 
@@ -67,5 +103,6 @@ export const useUserStore = defineStore("userStore", () => {
     access,
     refreshToken,
     logout,
+    registerUser,
   };
 });
