@@ -32,6 +32,7 @@
         >
           Register
         </q-btn>
+
         <q-btn
           class="q-mr-sm"
           color="red"

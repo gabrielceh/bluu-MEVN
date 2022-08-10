@@ -82,7 +82,7 @@ const alertBackend = (message = "Error de servidor") => {
         ></q-input>
 
         <div>
-          <q-btn label="Login" type="submit"></q-btn>
+          <q-btn label="Register" type="submit"></q-btn>
         </div>
       </q-form>
     </div>
