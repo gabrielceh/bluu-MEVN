@@ -47,7 +47,7 @@ export const useLinkStore = defineStore("link", () => {
       $q.loading.show({
         message: "Cargando informacion...",
       });
-      console.log("Llamando a los links 🐱‍🏍");
+      // console.log("Llamando a los links 🐱‍🏍");
       const res = await api({
         url: "/links",
         method: "GET",
@@ -55,7 +55,7 @@ export const useLinkStore = defineStore("link", () => {
           Authorization: `Bearer ${userStore.token}`,
         },
       });
-      console.log(res.data);
+      // console.log(res.data);
       // links.value = [...res.data.links]
       links.value = res.data.links.map((item) => {
         return {
@@ -98,7 +98,7 @@ export const useLinkStore = defineStore("link", () => {
       $q.loading.show({
         message: "Estamos actualizando el link",
       });
-      console.log(newlink);
+      // console.log(newlink);
       await api({
         url: `/links/${newlink._id}`,
         method: "PATCH",
