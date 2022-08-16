@@ -120,6 +120,10 @@ export const useLinkStore = defineStore("link", () => {
     }
   };
 
+  const resetLinkStore = () => {
+    links.value = [];
+  };
+
   getLinks();
   return {
     links,
@@ -127,5 +131,6 @@ export const useLinkStore = defineStore("link", () => {
     getLinks,
     removeLink,
     modifyLink,
+    resetLinkStore,
   };
 });

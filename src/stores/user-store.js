@@ -1,8 +1,11 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { api } from "src/boot/axios";
+import { useLinkStore } from "./link-store";
 
 export const useUserStore = defineStore("userStore", () => {
+  const linksStore = useLinkStore();
+
   const token = ref(null);
   const expiresIn = ref(null);
 
@@ -62,7 +65,7 @@ export const useUserStore = defineStore("userStore", () => {
   const logout = async () => {
     try {
       await api.get(`/auth/logout`);
-      localStorage.removeItem("user");
+      linksStore.resetLinkStore();
     } catch (error) {
       console.log(error);
     } finally {
@@ -95,6 +98,7 @@ export const useUserStore = defineStore("userStore", () => {
   const resetStore = () => {
     token.value = null;
     expiresIn.value = null;
+    localStorage.removeItem("user");
   };
 
   return {
