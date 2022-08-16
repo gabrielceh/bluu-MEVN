@@ -1,3 +1,20 @@
+import { api } from "src/boot/axios";
+
+const redirectLink = async (to, from, next) => {
+  try {
+    console.log(to.params.nanoid);
+    const { data } = await api.get(`/links/${to.params.nanoid}`);
+
+    console.log(data.origina_link);
+    window.location.href = data.origina_link;
+
+    next();
+  } catch (error) {
+    console.log(error);
+    next("/404");
+  }
+};
+
 const routes = [
   {
     path: "/",
@@ -25,6 +42,15 @@ const routes = [
         meta: {
           auth: true,
         },
+      },
+      {
+        path: "/:nanoid",
+        component: () => import("pages/RedirectPage.vue"),
+        beforeEnter: redirectLink,
+      },
+      {
+        path: "/404",
+        component: () => import("pages/ErrorNotFound.vue"),
       },
     ],
   },

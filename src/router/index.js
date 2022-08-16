@@ -36,7 +36,7 @@ export default route(function (/* { store, ssrContext } */) {
   });
 
   Router.beforeEach(async (to, from, next) => {
-    console.log(to.meta.auth);
+    // console.log(to.meta.auth);
     const requireAuth = to.meta.auth;
     const userStore = useUserStore();
 

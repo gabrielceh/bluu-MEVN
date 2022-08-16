@@ -71,7 +71,7 @@ export const useUserStore = defineStore("userStore", () => {
   };
 
   const refreshToken = async () => {
-    console.log("refresh");
+    // console.log("refresh");
     try {
       const res = await api.get(`/auth/refresh`);
       // console.log(res.data);

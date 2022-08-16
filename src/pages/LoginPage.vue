@@ -9,6 +9,7 @@ const userStore = useUserStore();
 const $q = useQuasar();
 const router = useRouter();
 
+const formLogin = ref(null);
 const email = ref("");
 const password = ref("");
 
@@ -19,6 +20,7 @@ const handleSubmit = async () => {
     router.push("/");
     email.value = "";
     password.value = "";
+    formLogin.value.resetValidation();
   } catch (error) {
     console.log(error);
     if (error.error) {
@@ -43,10 +45,10 @@ const alertBackend = (message = "Error de servidor") => {
 </script>
 
 <template>
-  <q-page padding class="row justify-center">
+  <q-page padding class="row justify-center" ref="formLogin">
     <div class="col-12 col-sm-6 col-md-5">
       <h3>Login</h3>
-      <q-form @submit.prevent="handleSubmit">
+      <q-form @submit.prevent="handleSubmit" ref="form">
         <q-input
           v-model="email"
           label="Email"
@@ -57,6 +59,7 @@ const alertBackend = (message = "Error de servidor") => {
               /^[^@]+@[^@]+\.[a-zA-Z]{2,}$/.test(val) ||
               'Formato Email incorrecto',
           ]"
+          lazy-ruñes
         ></q-input>
 
         <q-input
@@ -64,6 +67,7 @@ const alertBackend = (message = "Error de servidor") => {
           label="Password"
           type="password"
           :rules="[(val) => (val && val.length > 5) || 'Minino 6 caracteres']"
+          lazy-rules
         ></q-input>
 
         <div>

@@ -6,6 +6,7 @@ import { useNotify } from "src/composables/notifyHook";
 
 const linkStore = useLinkStore();
 const link = ref("");
+const formAdd = ref(null);
 const loading = ref(false);
 const { showNotify } = useNotify();
 
@@ -15,6 +16,7 @@ const handleSubmit = async () => {
     const res = await linkStore.createLink(link.value);
     showNotify("🥳🥳", "Link agregado", "positive");
     link.value = "";
+    formAdd.value.resetValidation();
   } catch (error) {
     if (error.error) {
       showNotify("ERROR", error.error, "negative");
@@ -32,7 +34,7 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <q-form @submit.prevent="handleSubmit">
+  <q-form @submit.prevent="handleSubmit" ref="formAdd">
     <!-- <q-input
       v-model="link"
       label="Ingrese link"
@@ -49,6 +51,7 @@ const handleSubmit = async () => {
           /^https?:\/\/[\w\-]+(\.[\w\-]+)+[/#?]?.*$/.test(val) ||
           'Formaro de URL no valido',
       ]"
+      lazy-rules
     >
     </q-input>
 
